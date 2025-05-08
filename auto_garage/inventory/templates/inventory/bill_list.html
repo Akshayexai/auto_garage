@@ -1,6 +1,7 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
+
 <div class="container">
     <!-- Page Heading -->
     <div class="page-header">
@@ -28,13 +29,13 @@
             <form method="get" class="search-form">
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search by bill number or customer..." value="{{ search_query }}">
+                        <input type="text" name="search" class="form-control" placeholder="Search by bill number or customer..." value="{{ search_query }}" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input type="date" name="start_date" class="form-control" placeholder="Start Date" value="{{ start_date }}">
+                        <input type="date" name="start_date" class="form-control" placeholder="Start Date" value="{{ start_date }}" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input type="date" name="end_date" class="form-control" placeholder="End Date" value="{{ end_date }}">
+                        <input type="date" name="end_date" class="form-control" placeholder="End Date" value="{{ end_date }}" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Filter</button>
@@ -107,7 +108,7 @@
             <button class="toggle-btn" onclick="toggleForm()">&#8681; Add New Bill &#8679;</button>
         </div>
         <div class="card-body" id="billFormContainer">
-            <form method="post" class="bill-form">
+            <form method="post" class="bill-form" autocomplete="off">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">

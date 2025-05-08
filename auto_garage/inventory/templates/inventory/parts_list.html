@@ -1,6 +1,7 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
+
 <div class="container">
     <!-- Page Heading -->
     <div class="page-header">
@@ -28,7 +29,7 @@
             <form method="get" class="search-form">
                 <div class="form-row">
                     <div class="form-group search-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search by name, category or serial number..." value="{{ search_query }}">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name, category or serial number..." value="{{ search_query }}" autocomplete="off">
                     </div>
                     <div class="form-group button-group">
                         <button type="submit" class="btn btn-primary">Search</button>
@@ -91,7 +92,7 @@
             <button class="toggle-btn" onclick="toggleForm()">&#8681; Add New Part &#8679;</button>
         </div>
         <div class="card-body" id="partFormContainer">
-            <form method="post" class="part-form">
+            <form method="post" class="part-form" autocomplete="off">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">
@@ -389,6 +390,12 @@
         
         var serialInput = document.getElementById('{{ form.serial_number.id_for_label }}');
         var categoryInput = document.getElementById('{{ form.category.id_for_label }}');
+        
+        // Add autocomplete="off" to all input fields
+        var allInputs = document.querySelectorAll('input, select, textarea');
+        allInputs.forEach(function(input) {
+            input.setAttribute('autocomplete', 'off');
+        });
         
         if (serialInput && serialInput.value === '') {
             generateSerialNumber();
