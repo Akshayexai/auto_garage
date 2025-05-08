@@ -1,0 +1,343 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <div>
+            <h1 class="fw-bold">Export Data</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Export Data</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 rounded-3 shadow-sm h-100 overflow-hidden">
+                <div class="card-body position-relative p-0">
+                    <div class="bg-primary bg-opacity-10 p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-primary fw-bold mb-1">Total Vehicles</h6>
+                                <h2 class="fw-bold mb-0">{{ total_vehicles }}</h2>
+                            </div>
+                            <div class="bg-primary text-white rounded-circle p-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-car fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <a href="{% url 'vehicle_list' %}" class="text-decoration-none d-flex align-items-center">
+                            <span class="me-2">View all vehicles</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 rounded-3 shadow-sm h-100 overflow-hidden">
+                <div class="card-body position-relative p-0">
+                    <div class="bg-success bg-opacity-10 p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-success fw-bold mb-1">Total Parts</h6>
+                                <h2 class="fw-bold mb-0">{{ total_parts }}</h2>
+                            </div>
+                            <div class="bg-success text-white rounded-circle p-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-cogs fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <a href="{% url 'parts_list' %}" class="text-decoration-none d-flex align-items-center">
+                            <span class="me-2">View all parts</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 rounded-3 shadow-sm h-100 overflow-hidden">
+                <div class="card-body position-relative p-0">
+                    <div class="bg-info bg-opacity-10 p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-info fw-bold mb-1">Total Bills</h6>
+                                <h2 class="fw-bold mb-0">{{ total_bills }}</h2>
+                            </div>
+                            <div class="bg-info text-white rounded-circle p-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-file-invoice-dollar fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <a href="{% url 'bill_list' %}" class="text-decoration-none d-flex align-items-center">
+                            <span class="me-2">View all bills</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Date Filtered Export -->
+    <div class="card border-0 rounded-3 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 pt-4 pb-3">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                    <i class="fas fa-calendar-alt text-primary"></i>
+                </div>
+                <h5 class="fw-bold mb-0 text-dark">Export Data by Date Range</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <form id="exportForm">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-5">
+                        <label for="from_date" class="form-label small text-muted fw-bold">FROM DATE</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="far fa-calendar-alt text-muted"></i>
+                            </span>
+                            <input type="date" id="from_date" name="from_date" class="form-control border-start-0 ps-0" required>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="to_date" class="form-label small text-muted fw-bold">TO DATE</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="far fa-calendar-alt text-muted"></i>
+                            </span>
+                            <input type="date" id="to_date" name="to_date" class="form-control border-start-0 ps-0" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold">QUICK SELECT</label>
+                        <div class="dropdown w-100">
+                            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dateRangeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Date Range
+                            </button>
+                            <ul class="dropdown-menu w-100" aria-labelledby="dateRangeDropdown">
+                                <li><a class="dropdown-item" href="#" onclick="setDateRange('today'); return false;">Today</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="setDateRange('yesterday'); return false;">Yesterday</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="setDateRange('thisWeek'); return false;">This Week</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="setDateRange('thisMonth'); return false;">This Month</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="setDateRange('lastMonth'); return false;">Last Month</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card border-0 rounded-3 shadow-sm h-100 bg-primary bg-opacity-10">
+                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-car fa-3x text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold mb-3">Vehicle Data</h6>
+                                <button type="button" class="btn btn-primary w-100" onclick="exportData('vehicles')">
+                                    <i class="fas fa-download me-2"></i>Export Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 rounded-3 shadow-sm h-100 bg-success bg-opacity-10">
+                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-cogs fa-3x text-success"></i>
+                                </div>
+                                <h6 class="fw-bold mb-3">Parts Data</h6>
+                                <button type="button" class="btn btn-success w-100" onclick="exportData('parts')">
+                                    <i class="fas fa-download me-2"></i>Export Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 rounded-3 shadow-sm h-100 bg-info bg-opacity-10">
+                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-file-invoice-dollar fa-3x text-info"></i>
+                                </div>
+                                <h6 class="fw-bold mb-3">Billing Data</h6>
+                                <button type="button" class="btn btn-info w-100" onclick="exportData('bills')">
+                                    <i class="fas fa-download me-2"></i>Export Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Export All Data -->
+    <div class="card border-0 rounded-3 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 pt-4 pb-3">
+            <div class="d-flex align-items-center">
+                <div class="bg-secondary bg-opacity-10 rounded-circle p-2 me-3">
+                    <i class="fas fa-database text-secondary"></i>
+                </div>
+                <h5 class="fw-bold mb-0 text-dark">Export Complete Data</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="{% url 'export_vehicles_excel' %}" class="btn btn-outline-primary w-100 py-3">
+                        <i class="fas fa-file-excel me-2"></i>All Vehicles Data
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'export_parts_excel' %}" class="btn btn-outline-success w-100 py-3">
+                        <i class="fas fa-file-excel me-2"></i>All Parts Data
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'export_bills_excel' %}" class="btn btn-outline-info w-100 py-3">
+                        <i class="fas fa-file-excel me-2"></i>All Bills Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete All Data -->
+    <div class="card border-0 rounded-3 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 pt-4 pb-3">
+            <div class="d-flex align-items-center">
+                <div class="bg-danger bg-opacity-10 rounded-circle p-2 me-3">
+                    <i class="fas fa-trash-alt text-danger"></i>
+                </div>
+                <h5 class="fw-bold mb-0 text-dark">Delete All Data</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Warning:</strong> This action will permanently delete all data from the system. This cannot be undone.
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                    <i class="fas fa-trash-alt me-2"></i>Delete All Data
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirm Deletion
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">You are about to delete <strong>ALL DATA</strong> from the system, including:</p>
+                <ul class="mb-3">
+                    <li>All vehicles ({{ total_vehicles }})</li>
+                    <li>All parts ({{ total_parts }})</li>
+                    <li>All bills ({{ total_bills }})</li>
+                    <li>All related records</li>
+                </ul>
+                <p class="mb-0 fw-bold">This action cannot be undone. Are you absolutely sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{% url 'delete_all_data' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-2"></i>Yes, Delete Everything
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set default dates (current month)
+    window.onload = function() {
+        setDateRange('thisMonth');
+    };
+    
+    // Set date range function
+    function setDateRange(range) {
+        const today = new Date();
+        let fromDate = new Date();
+        let toDate = new Date();
+        
+        switch(range) {
+            case 'today':
+                // Already set to today
+                break;
+            case 'yesterday':
+                fromDate.setDate(today.getDate() - 1);
+                toDate.setDate(today.getDate() - 1);
+                break;
+            case 'thisWeek':
+                // Set to beginning of current week (Sunday)
+                const dayOfWeek = today.getDay();
+                fromDate.setDate(today.getDate() - dayOfWeek);
+                break;
+            case 'thisMonth':
+                fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                break;
+            case 'lastMonth':
+                fromDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                toDate = new Date(today.getFullYear(), today.getMonth(), 0);
+                break;
+        }
+        
+        document.getElementById('from_date').valueAsDate = fromDate;
+        document.getElementById('to_date').valueAsDate = toDate;
+        
+        // Update dropdown text
+        const rangeText = {
+            'today': 'Today',
+            'yesterday': 'Yesterday',
+            'thisWeek': 'This Week',
+            'thisMonth': 'This Month',
+            'lastMonth': 'Last Month'
+        };
+        document.getElementById('dateRangeDropdown').innerText = rangeText[range];
+    }
+    
+    // Export data function
+    function exportData(type) {
+        const fromDate = document.getElementById('from_date').value;
+        const toDate = document.getElementById('to_date').value;
+        
+        if (!fromDate || !toDate) {
+            alert('Please select both From and To dates');
+            return;
+        }
+        
+        let url = '';
+        if (type === 'vehicles') {
+            url = "{% url 'export_vehicles_excel' %}";
+        } else if (type === 'parts') {
+            url = "{% url 'export_parts_excel' %}";
+        } else if (type === 'bills') {
+            url = "{% url 'export_bills_excel' %}";
+        }
+        
+        window.location.href = `${url}?from_date=${fromDate}&to_date=${toDate}`;
+    }
+</script>
+{% endblock %}

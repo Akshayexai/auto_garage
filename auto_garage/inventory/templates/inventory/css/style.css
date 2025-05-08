@@ -1,0 +1,19 @@
+.parts-selection {
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.parts-selection label {
+    display: block;
+    margin: 5px 0;
+    padding: 5px;
+    background: #f8f9fa;
+    border-radius: 3px;
+}
+
+.parts-selection label:hover {
+    background: #e9ecef;
+    cursor: pointer;
+}

@@ -1,0 +1,137 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Edit Part</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'parts_list' %}">Parts</a></li>
+        <li class="breadcrumb-item active">Edit Part</li>
+    </ol>
+    
+    {% if messages %}
+        <div class="row">
+            <div class="col-12">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-tools me-1"></i>
+                Part Information
+            </div>
+            <a href="{% url 'parts_list' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+                        <div class="input-wrapper">
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="text-danger small mt-1">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+                        <div class="input-wrapper">
+                            {{ form.category }}
+                            {% if form.category.errors %}
+                                <div class="text-danger small mt-1">{{ form.category.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.serial_number.id_for_label }}" class="form-label">Serial Number</label>
+                        <div class="input-wrapper">
+                            {{ form.serial_number }}
+                            {% if form.serial_number.errors %}
+                                <div class="text-danger small mt-1">{{ form.serial_number.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.quantity.id_for_label }}" class="form-label">Quantity</label>
+                        <div class="input-wrapper">
+                            {{ form.quantity }}
+                            {% if form.quantity.errors %}
+                                <div class="text-danger small mt-1">{{ form.quantity.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
+                        <div class="input-wrapper">
+                            {{ form.price }}
+                            {% if form.price.errors %}
+                                <div class="text-danger small mt-1">{{ form.price.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+               
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Update Part
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Improve form control styling and alignment */
+    .form-control, .form-select {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        height: calc(1.5em + 0.75rem + 2px);
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    
+    /* Make textareas taller */
+    textarea.form-control {
+        height: auto;
+        min-height: 100px;
+    }
+    
+    /* Ensure consistent input widths */
+    .input-wrapper {
+        width: 100%;
+    }
+    
+    /* Add consistent spacing */
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    /* Ensure form rows have proper spacing */
+    .row.mb-3 {
+        margin-bottom: 1rem !important;
+    }
+</style>
+{% endblock %}
